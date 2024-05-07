@@ -1,0 +1,10 @@
+---          
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: node-exporter
+  name: pull-logs-role
+rules:
+- apiGroups: ["*"]
+  resources: ["endpoints"]
+  verbs: ["get", "list", "watch"]

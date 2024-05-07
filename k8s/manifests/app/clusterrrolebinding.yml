@@ -1,0 +1,14 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: node-exporter-cron-job-account-controller
+  namespace: node-exporter
+subjects:
+- kind: ServiceAccount
+  name: node-exporter-cron-job-account
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: pull-logs-role
+  apiGroup: rbac.authorization.k8s.io

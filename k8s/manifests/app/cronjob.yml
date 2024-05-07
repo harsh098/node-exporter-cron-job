@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: node-exporter
+  name: node-exporter-cron
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 10
+      template:
+        spec:
+          containers:
+          - name: node-exporter-cron-job
+            image: hmx098/node-exporter-scraper:latest
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: ENV
+                valueFrom:
+                  configMapKeyRef:
+                    key: ENV
+                    name: node-exporter-cron-job-config
+              - name: NAMESPACE
+                valueFrom:
+                  configMapKeyRef:
+                    key: NAMESPACE
+                    name: node-exporter-cron-job-config
+              - name: PORT
+                valueFrom:
+                  configMapKeyRef:
+                    key: PORT
+                    name: node-exporter-cron-job-config
+              - name: SERVICE_NAME
+                valueFrom:
+                  configMapKeyRef:
+                    key: SERVICE_NAME
+                    name: node-exporter-cron-job-config
+                
+          
+          serviceAccountName: node-exporter-cron-job-account
+          automountServiceAccountToken: true
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 10
+          
