@@ -1,0 +1,20 @@
+# Docker compose to test the scraper on local k3d cluster
+version: "3"
+
+services:
+  scraper:
+    env_file:
+      - .env
+    build: .
+    environment:
+      - KUBECONFIG=/app/kubeconfig
+    volumes:
+      - ./logs:/app/logs
+      - ~/.kube/config:/app/kubeconfig
+    networks:
+      - k3d-multicluster
+
+networks:
+  k3d-multicluster:
+    name: k3d-multicluster
+    external: true

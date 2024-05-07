@@ -14,11 +14,20 @@ ENV=os.environ.get("ENV", "cluster")
 SERVICE_NAME=os.environ.get("SERVICE_NAME", "node-exporter")
 NAMESPACE=os.environ.get("NAMESPACE", "default")
 PORT=os.environ.get("PORT", "9100")
+logging.basicConfig(level = logging.INFO)
 logger=logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 if ENV=="dev":
     config.load_kube_config()
+    logger.info(ENV)
+    logger.info(SERVICE_NAME)
+    logger.info(NAMESPACE)
+    logger.info(f"KUBECONFIG={os.environ.get('KUBECONFIG', 'not set')}")
+    if os.environ.get("KUBECONFIG", "") and os.path.exists(os.environ.get("KUBECONFIG")):
+        logger.info("KUBECONFIG FOUND")
+    else:
+        logger.critical("Missing Kubeconfig")
 else:
     config.load_incluster_config()
 
@@ -102,6 +111,3 @@ if __name__ == '__main__':
     except Exception as e:
         logger.fatal(f"Fatal Error Occured: {e}")
         sys.exit(1)
-
-
-
