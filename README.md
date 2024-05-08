@@ -170,3 +170,7 @@ Same logs can be viewed inside the S3 Console
 
 ![Viewing Logs In S3 Console](docs/images/image2.png)
 
+
+## Security Measures Taken
+1. Hardened Docker Image:- defauts to non-root user
+2. Uses ServiceAccount with pods which only allow readonly access to Service Endpoints for node-exporter
