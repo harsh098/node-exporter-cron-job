@@ -13,6 +13,7 @@ services:
       - ~/.kube/config:/app/kubeconfig
     networks:
       - k3d-multicluster
+    entrypoint: touch /app/logs/test
 
 networks:
   k3d-multicluster:

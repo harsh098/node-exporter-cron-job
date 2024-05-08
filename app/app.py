@@ -6,6 +6,7 @@ from typing import List, Dict
 import asyncio
 import datetime
 import logging
+import boto3
 
 
 load_dotenv()
@@ -14,6 +15,10 @@ ENV=os.environ.get("ENV", "cluster")
 SERVICE_NAME=os.environ.get("SERVICE_NAME", "node-exporter")
 NAMESPACE=os.environ.get("NAMESPACE", "default")
 PORT=os.environ.get("PORT", "9100")
+S3_BUCKET=os.environ.get("S3_BUCKET", "")
+AWS_DEFAULT_REGION=os.environ.get("AWS_DEFAULT_REGION", "")
+AWS_SECRET_ACCESS_KEY=os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+AWS_ACCESS_KEY_ID=os.environ.get("AWS_ACCESS_KEY_ID", "")
 logging.basicConfig(level = logging.INFO)
 logger=logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -76,7 +81,26 @@ def __get_logs_data(ip: str, port: str) -> str:
     except requests.exceptions.RequestException as e:
         logger.error(f"Error fetching metrics: {e}")
         sys.exit(1)
-        
+
+def upload_to_s3_bucket(bucket_name: str, filepath: str):
+    if not bucket_name:
+        return
+    try:
+        s3_resource = boto3.resource(
+            's3', 
+            region_name = AWS_DEFAULT_REGION, 
+            aws_access_key_id = AWS_ACCESS_KEY_ID,
+            aws_secret_access_key = AWS_SECRET_ACCESS_KEY
+        )
+
+        s3_resource.Bucket(bucket_name).put_object(
+            Key = filepath, 
+            Body = open(filepath, 'rb')
+        )
+    except Exception as e:
+        logger.fatal(f"Error while uploading to s3 {e}")
+        sys.exit(1)
+
 
 def fetch_and_store_logs_data(ip: str, node_name: str, port: str) -> None:
     """
@@ -94,6 +118,7 @@ def fetch_and_store_logs_data(ip: str, node_name: str, port: str) -> None:
         filepath = os.path.join(LOGS_DIR, f"{node_name}-{time}.log")
         with open(filepath, "w+") as f:
             f.write(data)
+        upload_to_s3_bucket(S3_BUCKET, filepath)        
     except:
         sys.exit(1)
 
