@@ -60,7 +60,7 @@ prometheus-operator-kube-p-operator-78b5f48bfd-zm88h   1/1     Running   3 (179m
 ### Step -4 Configure S3 Secrets
 
 Now navigate to `k8s/manifests/app/secret-spec.yml` and configure the secrets as instructed in the file.
-> Note:- This is generally not a good practice set up External Secrets or a Secrets Manager such as HashiCorp Vault in production
+> Note:- This is generally not a good practice to set up secrets this way. Consider External Secrets or a Secrets Manager such as HashiCorp Vault in production
 
 ### Step -5 Deploy the CronJob
 
