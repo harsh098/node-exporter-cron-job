@@ -13,7 +13,7 @@ spec:
           containers:
           - name: node-exporter-cron-job
             image: hmx098/node-exporter-scraper:latest
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             env:
               - name: ENV
                 valueFrom:
@@ -35,6 +35,27 @@ spec:
                   configMapKeyRef:
                     key: SERVICE_NAME
                     name: node-exporter-cron-job-config
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    key: AWS_ACCESS_KEY_ID
+                    name: node-exporter-s3-secrets
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    key: AWS_SECRET_ACCESS_KEY
+                    name: node-exporter-s3-secrets
+              - name: AWS_DEFAULT_REGION
+                valueFrom:
+                  secretKeyRef:
+                    key: AWS_DEFAULT_REGION
+                    name: node-exporter-s3-secrets
+              - name: S3_BUCKET
+                valueFrom:
+                  secretKeyRef:
+                    key: S3_BUCKET
+                    name: node-exporter-s3-secrets
+              
             volumeMounts:
               - name: logs-volume
                 mountPath: /app/logs
