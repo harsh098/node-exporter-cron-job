@@ -35,8 +35,15 @@ spec:
                   configMapKeyRef:
                     key: SERVICE_NAME
                     name: node-exporter-cron-job-config
-                
+            volumeMounts:
+              - name: logs-volume
+                mountPath: /app/logs
           
+          volumes:
+            - name: logs-volume
+              persistentVolumeClaim:
+                claimName: node-exporter-cron-pvc
+
           serviceAccountName: node-exporter-cron-job-account
           automountServiceAccountToken: true
           restartPolicy: OnFailure
