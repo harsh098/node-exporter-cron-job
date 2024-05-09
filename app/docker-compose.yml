@@ -12,7 +12,7 @@ services:
       - ./logs:/app/logs
       - ~/.kube/config:/app/kubeconfig
     networks:
-      - k3d-multicluster #Replace with you K3d cluster network or any other network which can interact with you k8s cluster
+      - k3d-multicluster #Replace with your K3d cluster network or any other network which can interact with you k8s cluster
 
 networks:
 # Replace this with the network defined above
