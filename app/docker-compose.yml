@@ -1,4 +1,4 @@
-# Docker compose to test the scraper on local k3d cluster
+# Docker compose to test the scraper on local docker
 version: "3"
 
 services:
@@ -13,7 +13,6 @@ services:
       - ~/.kube/config:/app/kubeconfig
     networks:
       - k3d-multicluster
-    entrypoint: touch /app/logs/test
 
 networks:
   k3d-multicluster:
