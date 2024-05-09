@@ -1,5 +1,14 @@
+# Node-Exporter Metrics Collector
+
+This is a set of simple Kubernetes manifests the deploy node-exporter on each node and collects logs into a persistent volume and also uploads to S3.
+
+**Tested On**
+- k3d
+
 ## Architecture
 ---
+
+The below diagram shows the Architecture of the Logs Collector.
 
 ![Alt text](docs/images/arch.png)
 
@@ -165,6 +174,7 @@ cat k3d-multicluster-agent-0-20240508-201015.log | less
 ![Viewing Logs](docs/images/image.png)
 
 ## Viewing Logs in S3 Console
+---
 
 Same logs can be viewed inside the S3 Console
 
@@ -172,5 +182,18 @@ Same logs can be viewed inside the S3 Console
 
 
 ## Security Measures Taken
+---
+
 1. Hardened Docker Image:- defauts to non-root user
 2. Uses ServiceAccount with pods which only allow readonly access to Service Endpoints for node-exporter
+
+
+## Design Issues with this design
+---
+**The following design suffers from following issues:-**
+1. The PVs are bound to a single node once provisioned which stores logs for all nodes.
+2. This means if data in the node containing the PV is destroyed the PVs are also lost.
+3. With EKS prefer using EBS/EFS CSI Driver which can be used to provision EBS/EFS Volumes which can be mounted to other EC2 Instances and logs can be accessed using EFS mounts for EFS volumes and for EBS prefer using multi-attach with EC2 Instances to access logs.
+4. Similarly with GKE, prefer using GCE PersistentDisk CSI Driver.
+5. On, on-prem K8s, prefer using NFS Mounts.
+6. Another option for HA, is to use Distributed Storage CSI Drivers such as those provided with openEBS and longhorn.
