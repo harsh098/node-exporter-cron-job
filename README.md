@@ -5,6 +5,35 @@ This is a set of simple Kubernetes manifests the deploy node-exporter on each no
 **Tested On**
 - k3d
 
+## Problem Statement
+
+**Create a Kubernetes cron job that pulls node metrics like (CPU, Memory, Disk usage) and stores them in a file.**
+
+- Every time the cron runs, it should create a new file.
+- The filename should have the current timestamp.
+- By default, cron should be minute, but it should be configurable with the slightest changes to code.
+- Choose a tool of your choice to collect and expose metrics. Preferable is node exporter.
+- The instances involved here are Kubernetes nodes themselves.
+
+**Expected Output:**
+
+- The actual program code pulls the metrics and writes them to a file.
+- The Dockerfile to containerize the code.
+- Kubernetes YAML or HELM Chart.
+- A README file explaining the design, deployment and other details.
+
+**Note :**
+- Pick the choice of your language to write the cron job. Preferable is bash.
+- Treat the output files generated as essential and should be retained on pod restarts.
+- Deployment can either be Kube yamls, helm charts, kustomize.
+- You can make necessary assumptions if required and document them.
+- Choose local kubernetes setup like minikube, kind. Other option is to pick any cloud platform's kubernetes flavour.
+
+## Video Demonstration
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/NPzEO7Yw5ho/0.jpg)](https://www.youtube.com/watch?v=NPzEO7Yw5ho)  
+**Link** - [https://www.youtube.com/watch?v=NPzEO7Yw5ho](https://www.youtube.com/watch?v=NPzEO7Yw5ho)
+
+
 ## Architecture
 ---
 
