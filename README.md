@@ -1,6 +1,6 @@
 # Node-Exporter Metrics Collector
 
-This is a set of simple Kubernetes manifests the deploy node-exporter on each node and collects logs into a persistent volume and also uploads to S3.
+This is a set of simple Kubernetes manifests that deploy node-exporter on each node and collects logs into a persistent volume, then uploads to S3.
 
 **Tested On**
 - k3d
