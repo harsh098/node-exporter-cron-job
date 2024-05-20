@@ -1,5 +1,5 @@
 # Docker compose to test the scraper on local docker
-version: "3"
+version: "3.8"
 
 services:
   scraper:
@@ -11,11 +11,5 @@ services:
     volumes:
       - ./logs:/app/logs
       - ~/.kube/config:/app/kubeconfig
-    networks:
-      - k3d-multicluster #Replace with your K3d cluster network or any other network which can interact with you k8s cluster
-
-networks:
-# Replace this with the network defined above
-  k3d-multicluster:
-    name: k3d-multicluster
-    external: true
+    network_mode: "host"
+      
