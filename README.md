@@ -217,9 +217,9 @@ Same logs can be viewed inside the S3 Console
 2. Uses ServiceAccount with pods which only allow readonly access to Service Endpoints for node-exporter
 
 
-## Design Issues with this design
+## Issues with this design
 ---
-**The following design suffers from following issues:-**
+**This design suffers from following issues:-**
 1. The PVs are bound to a single node once provisioned which stores logs for all nodes.
 2. This means if data in the node containing the PV is destroyed the PVs are also lost.
 3. With EKS prefer using EBS/EFS CSI Driver which can be used to provision EBS/EFS Volumes which can be mounted to other EC2 Instances and logs can be accessed using EFS mounts for EFS volumes and for EBS prefer using multi-attach with EC2 Instances to access logs.
